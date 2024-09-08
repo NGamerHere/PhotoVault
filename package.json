@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "start": "bun server.js --watch ",
-    "front-end-build": "bun run build --watch ",
+    "build": "vite build --watch",
+    "start": "bun --watch server.js ",
+    "front-end-build": "bun run build ",
     "preview": "vite preview",
     "go": "bun run build  && bun start "
   },
@@ -20,10 +20,10 @@
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.11.0",
-    "nodemon": "^3.1.4",
     "pg": "^8.12.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
