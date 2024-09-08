@@ -6,7 +6,8 @@ import multer from 'multer';
 import cors from 'cors';
 import dotenv from 'dotenv'
 import client from "./api/services/Db.js";
-import Login from "./api/Login.js";
+import Login from "./api/route/Login.js";
+import Dashboard from "./api/route/Dashboard.js";
 dotenv.config();
 
 
@@ -32,6 +33,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.use(Login);
+app.use(Dashboard);
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
