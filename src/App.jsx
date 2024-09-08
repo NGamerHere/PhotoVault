@@ -1,27 +1,21 @@
-import './App.css'
-import {useState} from "react";
-import axios from "axios";
+import './App.css';
+import Home from "./components/Home.jsx";
+import Login from "./components/Login.jsx";
+import NoPage from "./components/NoPage.jsx";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
-    const [file,setFile]=useState(null);
-    const inputHandle= (event)=> {
-        setFile(event.target.files[0]);
-    }
-    const handleSubmit=()=>{
-        const formData=new FormData();
-        formData.append('file',file);
-        axios.post('/images/upload',formData,{headers: {'Content-Type': 'multipart/form-data',}})
-            .then((res)=>{
-            console.log(res.data);
-        }).catch((e)=>{
-            console.error(e.response.data);
-        })
-    }
+
   return (
-    <>
-        <input type='file' onChange={inputHandle}  />
-        <button onClick={handleSubmit} >submit</button>
-    </>
+      <BrowserRouter>
+          <Routes>
+              <Route >
+                  <Route index element={<Home />} />
+                  <Route path="login" element={<Login />} />
+                  <Route path="*" element={<NoPage />} />
+              </Route>
+          </Routes>
+      </BrowserRouter>
   )
 }
 
