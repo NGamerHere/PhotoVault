@@ -4,6 +4,21 @@ import bodyParser from "body-parser";
 import { fileURLToPath } from 'url';
 import multer from 'multer';
 import cors from 'cors';
+import dotenv from 'dotenv'
+import client from "./api/services/Db.js";
+import Login from "./api/Login.js";
+dotenv.config();
+
+
+
+client
+    .connect()
+    .then(() => {
+        console.log('Connected to PostgreSQL database');
+    })
+    .catch((err) => {
+        console.error('Error connecting to PostgreSQL database', err);
+    });
 
 const app=express();
 
@@ -16,6 +31,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use(cors());
 
+app.use(Login);
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -46,6 +62,6 @@ app.get('*', (req, res) => {
 });
 
 
-app.listen(3000, () => {
+app.listen(3000, async () => {
     console.log(`Server is running on port 3000`);
 });
