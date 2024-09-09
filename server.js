@@ -8,6 +8,7 @@ import client from "./api/services/Db.js";
 import Login from "./api/route/Login.js";
 import Dashboard from "./api/route/Dashboard.js";
 import ImageUpload from "./api/route/ImageUpload.js";
+import ImageGet from "./api/route/ImageGet.js";
 dotenv.config();
 
 
@@ -35,6 +36,7 @@ app.use(cors());
 app.use(Login);
 app.use(Dashboard);
 app.use(ImageUpload);
+app.use(ImageGet);
 
 
 app.get('*', (req, res) => {
