@@ -32,24 +32,28 @@ function Login(){
 
 
     return <>
-        <div className='flex justify-center' >
-            <div>
-                <h1 className="text-2xl">login page</h1>
-                <div className="mt-2" >
-                    <input type="text"
-                           className="border-2 border-gray-600 p-1 rounded-xl "
-                           value={email}
-                           onChange={handleEmailChange} />
+        <div className='flex justify-center h-[56em] mx-auto items-center w-full' >
+                <div className="border w-96 h-fit p-5 border-gray-300 rounded-xl shadow shadow-gray-400 hover:shadow-gray-600 hover:shadow-lg "  >
+                    <h1 className="text-4xl font-semibold text-center ">login page</h1>
+                    <div className="mt-6 flex justify-center ">
+                        <input type="text"
+                               className="border-2 w-72 border-gray-600  p-2 rounded-xl"
+                               placeholder="email"
+                               value={email}
+                               onChange={handleEmailChange}/>
+                    </div>
+                    <div className="mt-4 justify-center flex ">
+                        <input type="password"
+                               className="border-2 w-72 border-gray-600 p-2 rounded-xl "
+                               placeholder="password"
+                               value={password}
+                               onChange={handlePasswordChange}
+                        />
+                    </div>
+                    <div className="flex justify-center" >
+                        <button onClick={handleSubmit} className="p-2 px-3 bg-indigo-500 rounded-xl mt-3 "> Submit</button>
+                    </div>
                 </div>
-                <div className="pt-3" >
-                    <input type="password"
-                           className="border-2 border-gray-600 p-1 rounded-xl "
-                           value={password}
-                     onChange={handlePasswordChange}
-                    />
-                </div>
-                <button onClick={handleSubmit} className="p-3 bg-indigo-500 rounded-xl mt-3 " > Submit </button>
-            </div>
         </div>
     </>
 }

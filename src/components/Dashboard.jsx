@@ -19,8 +19,10 @@ const Dashboard=()=>{
  }, []);
 
 return <>
- <h1 className="text-2xl" >Dashboard</h1>
-  <PhotoUpload />
+ <div className="mt-14" >
+  <h1 className="text-2xl">Dashboard</h1>
+  <PhotoUpload/>
+ </div>
 </>
 }
 export default Dashboard;
