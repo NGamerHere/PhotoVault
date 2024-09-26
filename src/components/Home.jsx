@@ -1,6 +1,7 @@
 const Home=()=>{
     return <>
-    <h1>hello there</h1>
+    <h1 className="text-2xl" >hello there</h1>
+        <p>hello there</p>
     </>
 }
 

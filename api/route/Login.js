@@ -24,5 +24,28 @@ Login.post('/api/login',(req, res)=>{
     })
 });
 
+Login.post('/api/registration',async (req, res)=>{
+    const {name,email,password}=req.body;
+    client.query(" insert into users(name,email,password) values ($1,$2,$3) ",[name,email,password]).then((data)=>{
+        if(data.rowCount > 0){
+            return res.json({
+                message:'saved'
+            })
+        }else{
+            return res.json({
+                message:'error in saving the data'
+            }).status(501)
+        }
+    }).catch((e)=>{
+        console.error("error in saving the user "+e.code)
+        if(e.code === '23505' ){
+            return res.json({message:'email already exits'})
+        }else{
+            return res.json({message:'internal server error'}).status(501);
+        }
+    })
+
+});
+
 
 export default Login;
