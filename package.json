@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --watch",
+    "build": "vite build",
+    "build-dev": "vite build --watch",
     "start": "bun --watch server.js ",
     "front-end-build": "bun run build ",
     "preview": "vite preview",
