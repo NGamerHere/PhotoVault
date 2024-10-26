@@ -22,7 +22,7 @@ jobs:
           SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
         run: |
           sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no root@$SERVER_IP << 'EOF'
-            cd photovault
+            cd PhotoVault
             git pull origin main
             bun install  
             bun run build
