@@ -26,5 +26,5 @@ jobs:
             git pull origin master
             bun install  
             bun run build
-            pm2 restart photovault
+            pm2 restart all
           EOF
