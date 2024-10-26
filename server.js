@@ -40,7 +40,9 @@ app.get('/api/testing',async (req,res)=>{
    res.send('this is testing');
 });
 
-
+app.get('/api/testingv1',async (req,res)=>{
+    res.send('this is testing v1');
+});
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
