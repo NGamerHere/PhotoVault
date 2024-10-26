@@ -1,0 +1,61 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm test
+
+  deploy-staging:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    steps:
+      - name: Install sshpass
+        run: sudo apt-get update && sudo apt-get install -y sshpass
+      - name: Deploy to Staging Server
+        env:
+          SERVER_IP: ${{ secrets.STAGING_SERVER_IP }}
+          SERVER_PASSWORD: ${{ secrets.STAGING_SERVER_PASSWORD }}
+        run: |
+          sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no root@$SERVER_IP << 'EOF'
+            cd /path/to/your/project
+            git pull origin develop
+            npm install
+            pm2 restart all
+          EOF
+
+  deploy-production:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Install sshpass
+        run: sudo apt-get update && sudo apt-get install -y sshpass
+      - name: Deploy to Production Server
+        env:
+          SERVER_IP: ${{ secrets.PROD_SERVER_IP }}
+          SERVER_PASSWORD: ${{ secrets.PROD_SERVER_PASSWORD }}
+        run: |
+          sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no user@$SERVER_IP << 'EOF'
+            cd PhotoVault
+            git pull origin main
+            bun install
+            bun run build
+            pm2 restart photovault
+          EOF
