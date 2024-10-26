@@ -1,51 +1,54 @@
 import express from "express";
-import client from "../services/Db.js";
 import jwt from "jsonwebtoken";
-const Login=express.Router();
+import { User } from "../model/User.js";
 
-Login.post('/api/login',(req, res)=>{
-    const {email,password} = req.body;
-    client.query("select * from users where email='"+email+"';").then((data)=>{
-        if(data['rows'].length >0 ){
-            if(data['rows'][0]['password'] === password ){
-                const token = jwt.sign({ userId: data['rows'][0]['id'] }, 'your-secret-key', {
-                    expiresIn: '1h',
+const Login = express.Router();
+
+// Login Route
+Login.post('/api/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const user = await User.findOne({ where: { email } });
+
+        if (user) {
+            if (user.password === password) {
+                const token = jwt.sign({ userId: user.id }, 'your-secret-key', { expiresIn: '1h' });
+
+                return res.status(200).json({
+                    status: 'you have logged in',
+                    token: token
                 });
-                res.json({
-                    status:'you have logged in',
-                    token:token
-                }).status(200); 
-            }else{
-                res.json({message:'wrong password'})
+            } else {
+                return res.status(401).json({ message: 'wrong password' });
             }
-        }else{
-            res.json({ message:'account not found' }).status(404)
+        } else {
+            return res.status(404).json({ message: 'account not found' });
         }
-    })
+    } catch (error) {
+        console.error("Error in login:", error);
+        return res.status(500).json({ message: 'internal server error' });
+    }
 });
 
-Login.post('/api/registration',async (req, res)=>{
-    const {name,email,password}=req.body;
-    client.query(" insert into users(name,email,password) values ($1,$2,$3) ",[name,email,password]).then((data)=>{
-        if(data.rowCount > 0){
-            return res.json({
-                message:'saved'
-            })
-        }else{
-            return res.json({
-                message:'error in saving the data'
-            }).status(501)
-        }
-    }).catch((e)=>{
-        console.error("error in saving the user "+e.code)
-        if(e.code === '23505' ){
-            return res.json({message:'email already exits'})
-        }else{
-            return res.json({message:'internal server error'}).status(501);
-        }
-    })
 
+Login.post('/api/registration', async (req, res) => {
+    const { name, email, password } = req.body;
+
+    try {
+        const newUser = await User.create({ name, email, password });
+
+        return res.status(201).json({
+            message: 'User registered successfully',
+            user: newUser
+        });
+    } catch (error) {
+        console.error("Error in registration:", error);
+        if (error.name === 'SequelizeUniqueConstraintError') {
+            return res.status(400).json({ message: 'email already exists' });
+        }
+        return res.status(500).json({ message: 'internal server error' });
+    }
 });
-
 
 export default Login;
