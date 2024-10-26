@@ -36,6 +36,9 @@ app.use(Dashboard);
 app.use(ImageUpload);
 app.use(ImageGet);
 
+app.get('/api/testing',async (req,res)=>{
+   res.send('this is testing');
+});
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
