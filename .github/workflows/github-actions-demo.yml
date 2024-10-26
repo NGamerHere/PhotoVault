@@ -23,7 +23,7 @@ jobs:
         run: |
           sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no root@$SERVER_IP << 'EOF'
             cd PhotoVault
-            git pull origin main
+            git pull origin master
             bun install  
             bun run build
             pm2 restart photovault
