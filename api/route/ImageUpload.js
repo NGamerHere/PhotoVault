@@ -2,7 +2,7 @@ import multer from "multer";
 import path from "path";
 import express from "express";
 import jwtDecoding from "../middleware/JwtDecoding.js";
-import pool from "../services/Db.js";
+import File from "../model/File.js";
 
 const ImageUpload = express.Router();
 
@@ -15,6 +15,7 @@ const storage = multer.diskStorage({
         cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
     }
 });
+
 const upload = multer({ storage: storage });
 
 ImageUpload.post('/images/upload', jwtDecoding, upload.single('file'), async (req, res) => {
@@ -23,20 +24,17 @@ ImageUpload.post('/images/upload', jwtDecoding, upload.single('file'), async (re
         return res.status(400).send('No file uploaded.');
     }
 
-    const userId=req['tokenData']['userId']
+    const userId = req['tokenData']['userId'];
+
     try {
         const { filename } = req.file;
         console.log(filename);
-        const result = await pool.query(
-            'INSERT INTO files (filename, user_id) VALUES ($1, $2) RETURNING *',
-            [filename, userId]
-        );
-        if(result['rowCount'] > 0 ){
-            res.json( { message:`File uploaded successfully: ${req.file.filename}` } );
-        }else{
-            console.error('Error saving file to database:', error);
-            res.status(500).send('Error saving file information.');
-        }
+        const newFile = await File.create({
+            filename: filename,
+            user_id: userId
+        });
+
+        res.json({ message: `File uploaded successfully: ${newFile.filename}` });
     } catch (error) {
         console.error('Error saving file to database:', error);
         res.status(500).send('Error saving file information.');

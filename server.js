@@ -4,7 +4,7 @@ import bodyParser from "body-parser";
 import { fileURLToPath } from 'url';
 import cors from 'cors';
 import dotenv from 'dotenv'
-import client from "./api/services/Db.js";
+import sequelize from "./api/services/Db.js";
 import Login from "./api/route/Login.js";
 import Dashboard from "./api/route/Dashboard.js";
 import ImageUpload from "./api/route/ImageUpload.js";
@@ -12,14 +12,12 @@ import ImageGet from "./api/route/ImageGet.js";
 dotenv.config();
 
 
-
-client
-    .connect()
+sequelize.sync({alter:true})
     .then(() => {
-        console.log('Connected to PostgreSQL database');
+        console.log('Database synced successfully.');
     })
-    .catch((err) => {
-        console.error('Error connecting to PostgreSQL database', err);
+    .catch((error) => {
+        console.error('Error syncing the database:', error);
     });
 
 const app=express();

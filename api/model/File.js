@@ -1,26 +1,27 @@
-import { Sequelize, DataTypes } from 'sequelize'
+import { Sequelize, DataTypes } from 'sequelize';
 import sequelize from "../services/Db.js";
 
-const User = sequelize.define('User', {
+const File = sequelize.define('File', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
     },
-    name: {
-        type: DataTypes.STRING(15),
+    user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'users',
+            key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
+    },
+    filename: {
+        type: DataTypes.STRING(200),
         allowNull: false,
     },
-    email: {
-        type: DataTypes.STRING(15),
-        allowNull: false,
-        unique:true,
-    },
-    password: {
-        type: DataTypes.STRING(100),
-        allowNull: false,
-    },
-    createdAt: {
+    uploadedAt: {
         type: DataTypes.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
     },
@@ -30,10 +31,10 @@ const User = sequelize.define('User', {
         onUpdate: Sequelize.literal('CURRENT_TIMESTAMP'),
     },
 }, {
-    tableName: 'users',
+    tableName: 'files',
     timestamps: true,
     updatedAt: 'updatedAt',
-    createdAt: 'createdAt',
+    uploadedAt: 'uploadedAt',
 });
 
-export default User;
+export default File;
