@@ -4,7 +4,7 @@ import User  from "../model/User.js";
 
 const Login = express.Router();
 
-// Login Route
+
 Login.post('/api/login', async (req, res) => {
     const { email, password } = req.body;
 
