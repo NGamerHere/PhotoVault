@@ -12,7 +12,7 @@ import ImageGet from "./api/route/ImageGet.js";
 dotenv.config();
 
 
-sequelize.sync({alter:true})
+sequelize.sync()
     .then(() => {
         console.log('Database synced successfully.');
     })
