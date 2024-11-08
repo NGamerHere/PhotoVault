@@ -13,7 +13,7 @@ Login.post('/api/login', async (req, res) => {
 
         if (user) {
             if (user.password === password) {
-                const token = jwt.sign({ userId: user.id }, 'your-secret-key', { expiresIn: '1h' });
+                const token = jwt.sign({ userId: user.id }, 'your-secret-key', { expiresIn: '48h' });
 
                 return res.status(200).json({
                     status: 'you have logged in',
